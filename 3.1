@@ -1,0 +1,56 @@
+import React from "react";
+
+// Reusable ProductCard component
+const ProductCard = ({ name, price, inStock }) => {
+  return (
+    <div style={{
+      border: "1px solid #ddd",
+      borderRadius: "8px",
+      padding: "16px",
+      width: "200px",
+      margin: "10px",
+      textAlign: "center",
+      boxShadow: "2px 2px 10px #eee",
+      fontFamily: "Arial, sans-serif"
+    }}>
+      <h2>{name}</h2>
+      <p>Price: ${price}</p>
+      <p>Status: {inStock ? "In Stock ✅" : "Out of Stock ❌"}</p>
+    </div>
+  );
+};
+
+const App = () => {
+  const products = [
+    { name: "Laptop", price: 1200, inStock: true },
+    { name: "Headphones", price: 150, inStock: false },
+    { name: "Smartphone", price: 800, inStock: true },
+    { name: "Smartwatch", price: 250, inStock: true }
+  ];
+
+  return (
+    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+      {/* Title */}
+      <h1 style={{ textAlign: "center", marginBottom: "20px" }}>Product List</h1>
+
+      {/* Product Cards */}
+      <div style={{
+        display: "flex",
+        gap: "20px",
+        flexWrap: "wrap",
+        justifyContent: "center"
+      }}>
+        {products.map((product, index) => (
+          <ProductCard
+            key={index}
+            name={product.name}
+            price={product.price}
+            inStock={product.inStock}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default App;
