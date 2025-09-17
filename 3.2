@@ -1,0 +1,111 @@
+
+import React, { useState } from "react";
+
+const App = () => {
+  // Initial list of books
+  const [books, setBooks] = useState([
+    { title: "The Alchemist", author: "Paulo Coelho" },
+    { title: "1984", author: "George Orwell" },
+    { title: "To Kill a Mockingbird", author: "Harper Lee" },
+  ]);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [newBook, setNewBook] = useState({ title: "", author: "" });
+
+  // Add new book
+  const handleAddBook = (e) => {
+    e.preventDefault();
+    if (newBook.title.trim() === "" || newBook.author.trim() === "") return;
+    setBooks([...books, { ...newBook }]);
+    setNewBook({ title: "", author: "" });
+  };
+
+  // Remove a book by index
+  const handleRemoveBook = (index) => {
+    const updatedBooks = books.filter((_, i) => i !== index);
+    setBooks(updatedBooks);
+  };
+
+  // Filter books based on search term
+  const filteredBooks = books.filter(
+    (book) =>
+      book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      book.author.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+      <h1 style={{ textAlign: "center" }}>Library Management</h1>
+
+      {/* Search */}
+      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+        <input
+          type="text"
+          placeholder="Search by title or author..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ padding: "8px", width: "300px", borderRadius: "4px", border: "1px solid #ccc" }}
+        />
+      </div>
+
+      {/* Add Book Form */}
+      <form onSubmit={handleAddBook} style={{ textAlign: "center", marginBottom: "20px" }}>
+        <input
+          type="text"
+          placeholder="Book Title"
+          value={newBook.title}
+          onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
+          style={{ padding: "8px", marginRight: "10px", borderRadius: "4px", border: "1px solid #ccc" }}
+        />
+        <input
+          type="text"
+          placeholder="Author"
+          value={newBook.author}
+          onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
+          style={{ padding: "8px", marginRight: "10px", borderRadius: "4px", border: "1px solid #ccc" }}
+        />
+        <button type="submit" style={{ padding: "8px 12px", borderRadius: "4px", cursor: "pointer" }}>Add Book</button>
+      </form>
+
+      {/* Book List */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
+        {filteredBooks.length > 0 ? (
+          filteredBooks.map((book, index) => (
+            <div key={index} style={{
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              padding: "10px 16px",
+              width: "400px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              boxShadow: "2px 2px 8px #eee"
+            }}>
+              <div>
+                <strong>{book.title}</strong> by {book.author}
+              </div>
+              <button
+                onClick={() => handleRemoveBook(index)}
+                style={{
+                  padding: "4px 8px",
+                  borderRadius: "4px",
+                  backgroundColor: "#f44336",
+                  color: "#fff",
+                  border: "none",
+                  cursor: "pointer"
+                }}
+              >
+                Remove
+              </button>
+            </div>
+          ))
+        ) : (
+          <p>No books found.</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default App;
+
